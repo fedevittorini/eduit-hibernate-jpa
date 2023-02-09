@@ -1,0 +1,1 @@
+# eduit-hibernate-jpa
