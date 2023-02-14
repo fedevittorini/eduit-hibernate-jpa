@@ -1,26 +1,32 @@
 package com.eduit.course.hibernatejpa.db.entity;
 
-import java.util.Date;
+import java.sql.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name = UserEntity.TABLE_NAME)
+@Table(name = CartEntity.TABLE_NAME)
 /**
  * This class is mean to represent the database {@link ProductEntity.TABLE_NAME} table.
  * 
  * @author Federico Vittorini.
  *
  */
-public class UserEntity {
+public class CartEntity {
 
-	public static final String TABLE_NAME = "users";
+	
+	public static final String TABLE_NAME = "carts";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	/**
@@ -29,21 +35,13 @@ public class UserEntity {
 	 */
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
-	private String username;
+	@ManyToOne
+	@JoinColumn(name ="user_id")
+	private UserEntity user;
 	
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
-	
-	@Column(name = "last_name", nullable = false)
-	private String lastName;
-	
-	@Column(nullable = false, unique = true)
-	private String email;
-	
-	@Column(nullable = false)
-	private String password;
-	
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<CartDetailEntity> details;
+
 	@Column(name = "date_created", nullable = false)
 	private Date dateCreated;
 	
@@ -53,54 +51,30 @@ public class UserEntity {
 	/**
 	 * This is the default empty class constructor required by Hibernate. 
 	 */
-	public UserEntity() {}
+	public CartEntity() {}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 	
-	public String getEmail() {
-		return email;
+	public UserEntity getUser() {
+		return user;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser(UserEntity user) {
+		this.user = user;
+	}
+
+	public Set<CartDetailEntity> getDetails() {
+		return details;
+	}
+
+	public void setDetails(Set<CartDetailEntity> details) {
+		this.details = details;
 	}
 
 	public Date getDateCreated() {

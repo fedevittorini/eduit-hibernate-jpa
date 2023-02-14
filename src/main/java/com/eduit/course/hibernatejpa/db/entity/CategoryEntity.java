@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,6 +31,9 @@ public class CategoryEntity {
 	
 	@OneToMany(mappedBy = "parent")
 	private Set<CategoryEntity> children;
+	
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+	private Set<ProductEntity> products;
 	
 	@Column(name = "date_created", nullable = false)
 	private Date dateCreated;
@@ -71,6 +75,14 @@ public class CategoryEntity {
 		this.children = children;
 	}
 
+	public Set<ProductEntity> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<ProductEntity> products) {
+		this.products = products;
+	}
+	
 	public Date getDateCreated() {
 		return dateCreated;
 	}
