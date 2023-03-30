@@ -24,14 +24,14 @@ public class CustomUserRepository {
     private static Logger LOG = LoggerFactory
     	      .getLogger(CustomUserRepository.class);
     
-	@PersistenceContext
 	private EntityManager em;
 	
-	@Autowired
 	private PasswordEncoder pe;
 	
-	
-	public CustomUserRepository() {	}
+	public CustomUserRepository(EntityManager em, PasswordEncoder pe) {
+		this.em = em;
+		this.pe = pe;
+	}
 	
 	@Transactional
 	public Optional<UserEntity> createUserWithSQL(UserEntity user) {

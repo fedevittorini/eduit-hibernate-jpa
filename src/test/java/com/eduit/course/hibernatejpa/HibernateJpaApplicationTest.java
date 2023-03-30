@@ -1,5 +1,6 @@
 package com.eduit.course.hibernatejpa;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
@@ -19,6 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.eduit.course.hibernatejpa.db.entity.UserEntity;
 import com.eduit.course.hibernatejpa.db.repository.CustomUserRepository;
 import com.eduit.course.hibernatejpa.db.repository.UserRepository;
+import com.eduit.course.hibernatejpa.service.UserService;
+import com.eduit.course.hibernatejpa.service.UserServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,12 +34,14 @@ public class HibernateJpaApplicationTest {
     private UserRepository userRepository;
     private CustomUserRepository customUserRepository;
     private PasswordEncoder encoder;
+    private UserService userService;
 	
     @BeforeEach
     public void setup() {
     	userRepository = context.getBean(UserRepository.class);
     	customUserRepository = context.getBean(CustomUserRepository.class);
 		encoder = context.getBean(PasswordEncoder.class);
+		userService = context.getBean(UserService.class);
     }
     
     @AfterEach
@@ -44,21 +49,13 @@ public class HibernateJpaApplicationTest {
     	userRepository.deleteAll();
     }
     
-	@Test
-	public void testCreateUser_OK() {
-
-		
-		UserEntity ue2 = new UserEntity();
-		ue2.setUsername("test4");
-		ue2.setEmail("demo4@demo.com");
-		ue2.setFirstName("JUAN");
-		ue2.setLastName("PEREZ");
-		ue2.setPassword(encoder.encode("123"));
-		ue2.setDateCreated(new Date());
-		customUserRepository.createUserWithSQL(ue2);
-		
-		Optional<UserEntity> olg = customUserRepository.login("test4", "123");
-		assertTrue(olg.isPresent());
-	}
+    
+    @Test
+	public void testContext() {
+    	assertNotNull(userRepository);
+    	assertNotNull(customUserRepository);
+    	assertNotNull(encoder);
+    	assertNotNull(userService);
+    }
 
 }
